@@ -4,23 +4,449 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="profile"
+            type="com.example.sincity.viewmodel.ProfileViewModel" />
+
+        <variable
+            name="profileDTO"
             type="com.example.sincity.model.ProfileModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragment.ProfileFragment">
 
-        <TextView
-            android:id="@+id/profile"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="300dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:progressBarVisibility="@{profile.status}" />
+
+                <TextView
+                    android:id="@+id/error_message"
+                    android:layout_width="0dp"
+                    android:layout_height="22dp"
+                    android:gravity="center"
+                    app:errorMessageText="@{profile.usersErrorMessage}"
+                    app:errorMessageVisibility="@{profile.status}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <FrameLayout
+                android:id="@+id/constraintLayoutAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#A8A5A5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/back_button"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="8dp"
+                        android:layout_margin="16dp"
+                        android:src="@drawable/abc_vector_test"/>
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circleImageView"
+                        loadAvatarProfile="@{String.valueOf(profile.profileList.avatar_url)}"
+                        android:layout_width="125dp"
+                        android:layout_height="125dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="16dp"
+                        android:scaleType="centerCrop"
+                        tools:src="@tools:sample/backgrounds/scenic" />
+
+                <TextView
+                    android:id="@+id/profile_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="175dp"
+                    android:gravity="center"
+                    android:text="@{profile.profileList.name}"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+
+            </FrameLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="75dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutAvatar">
+
+                <TextView
+                    android:id="@+id/textView_type"
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:gravity="start"
+                    android:text="@string/text_type"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="11dp"
+                    android:gravity="start"
+                    android:text="@{profile.profileList.type}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView_type"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="75dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutType">
+
+                <TextView
+                    android:id="@+id/textView_name"
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:gravity="start"
+                    android:text="@string/text_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="11dp"
+                    android:gravity="start"
+                    android:text="@{profile.profileList.name}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView_name"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="75dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutName">
+
+                <TextView
+                    android:id="@+id/textView_location"
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:gravity="start"
+                    android:text="@string/text_location"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="11dp"
+                    android:gravity="start"
+                    android:text="@{profile.profileList.location}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView_location"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutCompany"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="75dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutLocation">
+
+                <TextView
+                    android:id="@+id/textView_company"
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:gravity="start"
+                    android:text="@string/text_company"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="11dp"
+                    android:gravity="start"
+                    android:text="@{profile.profileList.company}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView_company"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutBlog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="75dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutCompany">
+
+                <TextView
+                    android:id="@+id/textView_blog"
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:gravity="start"
+                    android:text="@string/text_blog"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="11dp"
+                    android:gravity="start"
+                    android:text="@{profile.profileList.blog}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView_blog"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="75dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutBlog">
+
+                <TextView
+                    android:id="@+id/textView_email"
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:gravity="start"
+                    android:text="@string/text_email"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="11dp"
+                    android:gravity="start"
+                    android:text="@{profile.profileList.email}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView_email"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutHireable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="75dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutEmail">
+
+                <TextView
+                    android:id="@+id/textView_hireable"
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:gravity="start"
+                    android:text="@string/text_hireable"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="11dp"
+                    android:gravity="start"
+                    android:text="@{profile.profileList.hireable}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView_hireable"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutBio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="75dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutHireable">
+
+                <TextView
+                    android:id="@+id/textView_bio"
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:gravity="start"
+                    android:text="@string/text_bio"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="11dp"
+                    android:gravity="start"
+                    android:text="@{profile.profileList.bio}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView_bio"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutFollowers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="75dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutBio">
+
+                <TextView
+                    android:id="@+id/textView_followers"
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:gravity="start"
+                    android:text="@string/text_followers"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="11dp"
+                    android:gravity="start"
+                    android:text="@{String.valueOf(profile.profileList.followers)}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView_followers"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutFollowings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="75dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutFollowers">
+
+                <TextView
+                    android:id="@+id/textView_followings"
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:gravity="start"
+                    android:text="@string/text_followers"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="11dp"
+                    android:gravity="start"
+                    android:text="@{String.valueOf(profile.profileList.following)}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView_followings"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutFollowings">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/materialButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="75dp"
+                    android:layout_marginLeft="75dp"
+                    app:cornerRadius="8dp"
+                    android:textColor="@android:color/black"
+                    android:backgroundTint="@color/design_default_color_secondary_variant"
+                    android:text="@string/text_add_favorite"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 </layout>

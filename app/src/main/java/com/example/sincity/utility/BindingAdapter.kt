@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.sincity.R
 import com.example.sincity.adapter.UserAdapter
 import com.example.sincity.model.UserModel
 import kotlinx.android.synthetic.main.fragment_user.view.*
@@ -32,8 +33,15 @@ fun loadImage(image: ImageView, url: String) {
     }
 }
 
+@BindingAdapter("loadAvatarProfile")
+fun loadImageProfile(image: ImageView, url: String) {
+    url.let {
+        Glide.with(image.context).load(url).placeholder(R.drawable.ic_github).into(image)
+    }
+}
+
 /**
- * Metodo que no ayuda a mostrar el progressBar dependediendo la respues del viewModel
+ * Metodo que no ayuda a mostrar el progressBar dependediendo la respuesta del viewModel
  */
 @BindingAdapter("app:progressBarVisibility")
 fun changeVisibility(progressBar: ProgressBar, status: String?){

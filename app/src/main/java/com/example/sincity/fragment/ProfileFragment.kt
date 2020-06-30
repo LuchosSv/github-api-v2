@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.sincity.databinding.FragmentProfileBinding
 import com.example.sincity.viewmodel.ProfileViewModel
@@ -14,7 +15,7 @@ import com.example.sincity.viewmodel.ProfileViewModel
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
-    private val profileViewModel by viewModels<ProfileViewModel>()
+    private val profileViewModel: ProfileViewModel by viewModels()
     private val profileArgs: ProfileFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -23,15 +24,16 @@ class ProfileFragment : Fragment() {
     ): View? {
         binding = FragmentProfileBinding.inflate(inflater)
         binding.lifecycleOwner = this@ProfileFragment
-        //binding.profile = profileViewModel
+        binding.profile = profileViewModel
 
         profileViewModel.getProfileData(profileArgs.argumentProfile)
-        profileViewModel.profileList.observe(viewLifecycleOwner, Observer {profileList ->
-            profileList.let {
-                binding.profile.text = profileList.name
-            }
-        })
 
+        /**
+         * Boton para volver a la lista de usuarios
+         */
+        binding.backButton.setOnClickListener{
+           findNavController().navigateUp()
+       }
         return binding.root
     }
 
