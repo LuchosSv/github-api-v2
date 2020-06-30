@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="@string/text_users"
+        android:icon="@drawable/ic_github"
+        android:id="@+id/userFragment"/>
+
+    <item
+        android:title="@string/text_favorites"
+        android:icon="@drawable/ic_star"
+        android:id="@+id/favoriteFragment"/>
+
+</menu>

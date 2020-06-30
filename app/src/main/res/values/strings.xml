@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">SinCity</string>
+
+    <string name="text_users">Users</string>
+    <string name="text_favorites">Favorites</string>
+    <string name="text_github_users">GitHub Users</string>
+
+    <!-- detail user profile -->
+    <string name="text_type">Type: </string>
+    <string name="text_name">Name: </string>
+    <string name="text_location">Location: </string>
+    <string name="text_company">Company</string>
+    <string name="text_blog">Blog: </string>
+    <string name="text_email">Email: </string>
+    <string name="text_hireable">Hireable: </string>
+    <string name="text_bio">Bio: </string>
+    <string name="text_twitter">Twitter: </string>
+    <string name="text_followers">Followers: </string>
+    <string name="text_following">Following: </string>
+    <string name="text_null">null</string>
+
+    <string name="text_add_favorite">Add to favorite</string>
+    <string name="text_error_message"><b>Error loading data</b></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
