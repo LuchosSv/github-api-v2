@@ -6,3 +6,5 @@ const val DB_NAME = "user_db"
 const val LOADING = "loading"
 const val SUCCESS = "success"
 const val ERROR = "error"
+
+const val KEY = "ADD_USER"

@@ -31,7 +31,6 @@ class UserFragment : Fragment() {
     }
 
     private fun getUserCallback() = UserAdapter.OnClickListener { userModel ->
-        Toast.makeText(context, "Selected user ${userModel.login}", Toast.LENGTH_LONG).show()
         this.findNavController().navigate(
             UserFragmentDirections.actionUserFragmentToProfileFragment(userModel.login)
         )
