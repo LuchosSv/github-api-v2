@@ -8,3 +8,5 @@ const val SUCCESS = "success"
 const val ERROR = "error"
 
 const val KEY = "ADD_USER"
+
+const val NAME_DATABASE = "user_db"

@@ -23,4 +23,5 @@
     <string name="text_error_message"><b>Error loading data</b></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
 </resources>

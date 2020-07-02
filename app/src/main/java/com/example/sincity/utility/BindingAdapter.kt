@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.sincity.R
 import com.example.sincity.adapter.UserAdapter
 import com.example.sincity.model.UserModel
@@ -29,14 +30,28 @@ fun userWithRecyclerView(recyclerView: RecyclerView, usersList: List<UserModel>?
 @BindingAdapter("loadAvatar")
 fun loadImage(image: ImageView, url: String) {
     url.let {
-        Glide.with(image.context).load(url).into(image)
+        Glide.with(image.context)
+            .load(url)
+            .apply(
+                RequestOptions()
+                    .error(R.drawable.ic_broken_image)
+                    .placeholder(R.drawable.loading_animation)
+            )
+            .into(image)
     }
 }
 
 @BindingAdapter("loadAvatarProfile")
 fun loadImageProfile(image: ImageView, url: String) {
     url.let {
-        Glide.with(image.context).load(url).placeholder(R.drawable.ic_github).into(image)
+        Glide.with(image.context)
+            .load(url)
+            .apply(
+                RequestOptions()
+                    .error(R.drawable.ic_broken_image)
+                    .placeholder(R.drawable.loading_animation)
+            )
+            .into(image)
     }
 }
 
@@ -44,10 +59,10 @@ fun loadImageProfile(image: ImageView, url: String) {
  * Metodo que no ayuda a mostrar el progressBar dependediendo la respuesta del viewModel
  */
 @BindingAdapter("app:progressBarVisibility")
-fun changeVisibility(progressBar: ProgressBar, status: String?){
+fun changeVisibility(progressBar: ProgressBar, status: String?) {
     Log.i("MM", "MM-1 Fail, $status")
     status?.let {
-        when(it){
+        when (it) {
             LOADING -> progressBar.visibility = View.VISIBLE
             SUCCESS -> progressBar.visibility = View.GONE
             ERROR -> progressBar.visibility = View.GONE
@@ -60,9 +75,9 @@ fun changeVisibility(progressBar: ProgressBar, status: String?){
  *
  */
 @BindingAdapter("app:errorMessageVisibility", "app:errorMessageText")
-fun showMessageException(textView: TextView, message: String?, errorMessage: String?){
+fun showMessageException(textView: TextView, message: String?, errorMessage: String?) {
     message?.let {
-        when(it){
+        when (it) {
             ERROR -> {
                 textView.visibility = View.VISIBLE
                 textView.text = errorMessage
@@ -73,3 +88,18 @@ fun showMessageException(textView: TextView, message: String?, errorMessage: Str
         }
     }
 }
+
+@BindingAdapter("app:connectionError")
+fun errorConnection(image: ImageView, message: String?) {
+    message?.let {
+        when (it) {
+            ERROR -> {
+                image.visibility = View.VISIBLE
+            }
+            else -> {
+                image.visibility = View.GONE
+            }
+        }
+    }
+}
+

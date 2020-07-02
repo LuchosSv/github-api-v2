@@ -1,6 +1,5 @@
 package com.example.sincity.viewmodel
 
-import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,9 +9,14 @@ import com.example.sincity.utility.ERROR
 import com.example.sincity.utility.LOADING
 import com.example.sincity.utility.RetrofitFactory
 import com.example.sincity.utility.SUCCESS
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class UserViewModel : ViewModel() {
 
@@ -37,6 +41,9 @@ class UserViewModel : ViewModel() {
     val usersErrorMessage: LiveData<String>
         get() = _usersErrorMessage
 
+    private val userJob = Job()
+    private val coroutineScope = CoroutineScope(userJob + Dispatchers.Main)
+
     init {
 
         getUserModelData()
@@ -46,7 +53,6 @@ class UserViewModel : ViewModel() {
     private fun getUserModelData() {
 
         _status.value = LOADING
-        Log.i("MSG", "VM, ${_status.value}, ${status.value}")
 
         /**
          * Metodo handler crea un delay en la llamada a la api de 3 segundos
