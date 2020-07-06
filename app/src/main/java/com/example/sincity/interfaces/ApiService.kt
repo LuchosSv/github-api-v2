@@ -12,9 +12,11 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("users")
-    fun getUser(): Call<List<UserModel>>
+    //fun getUser(): Call<List<UserModel>>
+    suspend fun getUser(): List<UserModel>
 
     @GET("users/{login}")
-    fun getProfile(@Path("login") login: String): Call<ProfileModel>
+    //fun getProfile(@Path("login") login: String): Call<ProfileModel>
+    suspend fun getProfile(@Path("login") login: String): ProfileModel
 
 }

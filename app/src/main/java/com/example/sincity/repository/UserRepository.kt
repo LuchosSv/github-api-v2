@@ -1,23 +1,34 @@
 package com.example.sincity.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.navArgs
+import com.example.sincity.fragment.ProfileFragmentArgs
+import com.example.sincity.model.ProfileModel
+import com.example.sincity.model.UserModel
 import com.example.sincity.network.Entity.UserEntity
 import com.example.sincity.network.database.UserDatabase
+import com.example.sincity.repository.data.RemoteDataSource
 import com.example.sincity.utility.RetrofitFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.await
 
-class UserRepository(private val database: UserDatabase) {
+class UserRepository {
 
-    val ace: LiveData<List<UserEntity>> = database.userDao().getUser()
+    private val remoteDataSource = RemoteDataSource()
 
-    //retrfofit es una lista pero insertUser es un objeto.. conflicto
-    /*suspend fun refreshAce(){
-        withContext(Dispatchers.IO){
-            val playlist = RetrofitFactory.makeRetrofitService().getUser().await()
-            database.userDao().insertUser(playlist)
+    suspend fun getUserByRepository(): List<UserModel> {
+        Log.i("Repository", "Success :D")
+        return remoteDataSource.getUserListRemote()
+    }
 
-        }
-    }*/
+    suspend fun getProfileRepository(name: String): ProfileModel{
+        return remoteDataSource.getProfileListRemote(name)
+    }
+
 }

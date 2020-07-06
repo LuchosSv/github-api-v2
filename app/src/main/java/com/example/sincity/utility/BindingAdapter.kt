@@ -60,7 +60,6 @@ fun loadImageProfile(image: ImageView, url: String) {
  */
 @BindingAdapter("app:progressBarVisibility")
 fun changeVisibility(progressBar: ProgressBar, status: String?) {
-    Log.i("MM", "MM-1 Fail, $status")
     status?.let {
         when (it) {
             LOADING -> progressBar.visibility = View.VISIBLE
@@ -68,7 +67,6 @@ fun changeVisibility(progressBar: ProgressBar, status: String?) {
             ERROR -> progressBar.visibility = View.GONE
         }
     }
-    Log.i("MM", "MM-3 Fail, $status")
 }
 
 /**

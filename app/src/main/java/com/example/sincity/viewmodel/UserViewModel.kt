@@ -4,7 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.sincity.model.UserModel
+import com.example.sincity.repository.UserRepository
+import com.example.sincity.repository.data.RemoteDataSource
 import com.example.sincity.utility.ERROR
 import com.example.sincity.utility.LOADING
 import com.example.sincity.utility.RetrofitFactory
@@ -18,7 +21,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
-class UserViewModel : ViewModel() {
+class UserViewModel() : ViewModel() {
 
     /**
      * Live data de la lista del objeto
@@ -41,16 +44,34 @@ class UserViewModel : ViewModel() {
     val usersErrorMessage: LiveData<String>
         get() = _usersErrorMessage
 
-    private val userJob = Job()
-    private val coroutineScope = CoroutineScope(userJob + Dispatchers.Main)
+    //private val repository = UserRepository(RemoteDataSource())
+    private val repository = UserRepository()
 
     init {
 
-        getUserModelData()
+        //getUserModelData()
+        load()
 
     }
 
-    private fun getUserModelData() {
+    /**
+     * Metodo para pedir la lista al repository
+     */
+    private fun load() {
+        viewModelScope.launch {
+            _status.value = LOADING
+            try {
+                _userList.value = repository.getUserByRepository()
+                Log.i("viewModel", "Success, ${_userList.value!!.size}")
+                _status.value = SUCCESS
+            } catch (e: Exception) {
+                _status.value = ERROR
+                _usersErrorMessage.value = e.message
+                Log.e("viewModel", "Error, ${e.message}")
+            }
+        }
+    }
+    /*private fun getUserModelData() {
 
         _status.value = LOADING
 
@@ -75,8 +96,13 @@ class UserViewModel : ViewModel() {
                         call: Call<List<UserModel>>,
                         response: Response<List<UserModel>>
                     ) {
-                        _userList.value = response.body()!!
-                        Log.i("OK", "Success, ${response.code()}")
+                       if (response.isSuccessful){
+                           _userList.value = response.body()!!
+                           Log.i("OK", "Success, ${response.code()}")
+                       }else{
+                           //Error code 403 detector
+                           Log.i("Bad", "Error, ${response.code()}, ${response.message()}")
+                       }
                     }
                 })
             _status.value = SUCCESS
@@ -84,6 +110,6 @@ class UserViewModel : ViewModel() {
             _status.value = ERROR
             _usersErrorMessage.value = e.message
         }
-    }
+    }*/
 
 }

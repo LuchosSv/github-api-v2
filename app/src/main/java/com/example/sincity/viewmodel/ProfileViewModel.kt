@@ -4,14 +4,18 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.sincity.model.ProfileModel
+import com.example.sincity.repository.UserRepository
 import com.example.sincity.utility.ERROR
 import com.example.sincity.utility.LOADING
 import com.example.sincity.utility.RetrofitFactory
 import com.example.sincity.utility.SUCCESS
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class ProfileViewModel : ViewModel() {
 
@@ -27,7 +31,23 @@ class ProfileViewModel : ViewModel() {
     val usersErrorMessage: LiveData<String>
         get() = _usersErrorMessage
 
-    fun getProfileData(name: String) {
+    private val repository = UserRepository()
+
+    fun getProfileData(name: String){
+        viewModelScope.launch {
+            _status.value = LOADING
+            try {
+                _profileList.value = repository.getProfileRepository(name)
+                _status.value = SUCCESS
+            } catch (e: Exception) {
+                Log.e("viewModel, Profile", "Error, ${e.message}")
+                _status.value = ERROR
+                _usersErrorMessage.value = e.message
+            }
+        }
+    }
+
+    /*fun getProfileData(name: String) {
 
         _status.value = LOADING
 
@@ -50,7 +70,6 @@ class ProfileViewModel : ViewModel() {
             _status.value = ERROR
             _usersErrorMessage.value = e.message
         }
-
-    }
+    }*/
 
 }

@@ -7,7 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitFactory {
 
-    enum class MarsApiFilter(val value: String) { NAME("login"), SHOW_ALL("all") }
+    //example enum
+    //enum class MarsApiFilter(val value: String) { NAME("login"), SHOW_ALL("all") }
 
     fun makeRetrofitService(): ApiService {
         return Retrofit.Builder()
