@@ -33,7 +33,7 @@ class UserFragment : Fragment() {
         binding = FragmentUserBinding.inflate(inflater)
         binding.lifecycleOwner = this@UserFragment
         /**
-         * Brinda acceso  al viewModel para poder usarlo con dataBinding
+         * Brinda acceso al viewModel para poder usarlo con dataBinding
          */
         binding.user = userViewModel
 
