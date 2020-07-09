@@ -1,34 +1,20 @@
 package com.example.sincity.viewmodel
 
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.sincity.model.UserModel
+import com.example.sincity.network.database.UserDatabase
 import com.example.sincity.repository.UserRepository
 import com.example.sincity.repository.data.RemoteDataSource
+import com.example.sincity.repository.local.LocalDataSource
 import com.example.sincity.utility.ERROR
 import com.example.sincity.utility.LOADING
-import com.example.sincity.utility.RetrofitFactory
 import com.example.sincity.utility.SUCCESS
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.lang.Exception
 
-class UserViewModel() : ViewModel() {
-
-    /**
-     * Live data de la lista del objeto
-     */
-    private val _userList = MutableLiveData<List<UserModel>>()
-    val userList: LiveData<List<UserModel>>
-        get() = _userList
+class UserViewModel(private val applicationContext: Context) : ViewModel() {
 
     /**
      * Live data para manejar el status (pantalla de carga)
@@ -44,25 +30,31 @@ class UserViewModel() : ViewModel() {
     val usersErrorMessage: LiveData<String>
         get() = _usersErrorMessage
 
+    /**
+     * Live data de la lista del objeto
+     */
+    private val _userList = MutableLiveData<List<UserModel>>()
+    val userList: LiveData<List<UserModel>>
+        get() = _userList
+
+    //Repository, Dao
+    private val dao = UserDatabase.getInstance(applicationContext).userDao()
+    private val repository = UserRepository(RemoteDataSource(), LocalDataSource(dao))
     //private val repository = UserRepository(RemoteDataSource())
-    private val repository = UserRepository()
 
     init {
-
-        //getUserModelData()
-        load()
-
+        getListUserVM()
     }
 
     /**
      * Metodo para pedir la lista al repository
      */
-    private fun load() {
+    private fun getListUserVM() {
         viewModelScope.launch {
             _status.value = LOADING
             try {
                 _userList.value = repository.getUserByRepository()
-                Log.i("viewModel", "Success, ${_userList.value!!.size}")
+                Log.i("viewModel", "Success")
                 _status.value = SUCCESS
             } catch (e: Exception) {
                 _status.value = ERROR
@@ -71,45 +63,14 @@ class UserViewModel() : ViewModel() {
             }
         }
     }
-    /*private fun getUserModelData() {
 
-        _status.value = LOADING
-
-        /**
-         * Metodo handler crea un delay en la llamada a la api de 3 segundos
-         * Handler().postDelayed({}, 3000)
-         */
-
-        /**
-         * Hacermos la llamada a la api
-         * El try nos ayuda a manejar errores en la llamada
-         */
-        try {
-            //throw Exception("No pudimos cargar los usuarios")
-            RetrofitFactory.makeRetrofitService().getUser()
-                .enqueue(object : Callback<List<UserModel>> {
-                    override fun onFailure(call: Call<List<UserModel>>, t: Throwable) {
-                        Log.e("Error en viewModel", "Cause: ${t.message}")
-                    }
-
-                    override fun onResponse(
-                        call: Call<List<UserModel>>,
-                        response: Response<List<UserModel>>
-                    ) {
-                       if (response.isSuccessful){
-                           _userList.value = response.body()!!
-                           Log.i("OK", "Success, ${response.code()}")
-                       }else{
-                           //Error code 403 detector
-                           Log.i("Bad", "Error, ${response.code()}, ${response.message()}")
-                       }
-                    }
-                })
-            _status.value = SUCCESS
-        } catch (e: Exception) {
-            _status.value = ERROR
-            _usersErrorMessage.value = e.message
+    class UserViewModelFactory(private val app: Context) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
+                return UserViewModel(app) as T
+            }
+            throw IllegalArgumentException("Invalid Viewmodel")
         }
-    }*/
+    }
 
 }

@@ -20,7 +20,9 @@ class UserFragment : Fragment() {
 
     private lateinit var binding: FragmentUserBinding
 
-    private val userViewModel: UserViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels{
+        UserViewModel.UserViewModelFactory(requireContext())
+    }
 
     /*private val userViewModel: UserViewModel by lazy {
         ViewModelProviders.of(this).get(UserViewModel::class.java)

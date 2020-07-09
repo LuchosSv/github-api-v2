@@ -1,12 +1,13 @@
 package com.example.sincity.viewmodel
 
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.sincity.model.ProfileModel
+import com.example.sincity.network.database.UserDatabase
 import com.example.sincity.repository.UserRepository
+import com.example.sincity.repository.data.RemoteDataSource
+import com.example.sincity.repository.local.LocalDataSource
 import com.example.sincity.utility.ERROR
 import com.example.sincity.utility.LOADING
 import com.example.sincity.utility.RetrofitFactory
@@ -17,7 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(private val applicationContext: Context) : ViewModel() {
 
     private val _profileList = MutableLiveData<ProfileModel>()
     val profileList: LiveData<ProfileModel>
@@ -31,7 +32,8 @@ class ProfileViewModel : ViewModel() {
     val usersErrorMessage: LiveData<String>
         get() = _usersErrorMessage
 
-    private val repository = UserRepository()
+    private val dao = UserDatabase.getInstance(applicationContext).userDao()
+    private val repository = UserRepository(RemoteDataSource(), LocalDataSource((dao)))
 
     fun getProfileData(name: String){
         viewModelScope.launch {
@@ -47,29 +49,13 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    /*fun getProfileData(name: String) {
-
-        _status.value = LOADING
-
-        try {
-            RetrofitFactory.makeRetrofitService().getProfile(name)
-                .enqueue(object : Callback<ProfileModel> {
-                    override fun onFailure(call: Call<ProfileModel>, t: Throwable) {
-                        Log.e("Error", "ProfileViewModel: $t")
-                    }
-
-                    override fun onResponse(
-                        call: Call<ProfileModel>,
-                        response: Response<ProfileModel>
-                    ) {
-                        _profileList.value = response.body()!!
-                    }
-                })
-            _status.value = SUCCESS
-        } catch (e: Exception) {
-            _status.value = ERROR
-            _usersErrorMessage.value = e.message
+    class ProfileViewModelFactory(private val app: Context) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+                return ProfileViewModel(app) as T
+            }
+            throw IllegalArgumentException("Invalid Viewmodel")
         }
-    }*/
+    }
 
 }

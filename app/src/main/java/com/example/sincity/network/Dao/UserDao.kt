@@ -20,7 +20,7 @@ interface UserDao {
     fun getListUserById(userId: Int): LiveData<UserEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUser(userEntity: UserEntity)
+    suspend fun insertUser(userEntity: UserEntity)
     //fun insertUser(vararg users: UserEntity)
 
     //Delete

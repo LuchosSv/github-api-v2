@@ -19,8 +19,10 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 class ProfileFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentProfileBinding
-    private val profileViewModel: ProfileViewModel by viewModels()
     private val profileArgs: ProfileFragmentArgs by navArgs()
+    private val profileViewModel: ProfileViewModel by viewModels {
+        ProfileViewModel.ProfileViewModelFactory(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,12 +48,16 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v){
+        when (v) {
             //onClick para volver a la lista de usuarios
             back_button -> findNavController().navigateUp()
             //onClick para agregar un usuario a favorito
             materialButton -> {
-                Toast.makeText(this.context, "${profileViewModel.profileList.value!!.login} Added", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this.context,
+                    "${profileViewModel.profileList.value!!.login} Added",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
