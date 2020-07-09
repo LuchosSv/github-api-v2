@@ -14,13 +14,15 @@ import com.example.sincity.network.Entity.UserEntity
 interface UserDao {
 
     @Query("SELECT * FROM user_table")
-    fun getUser(): LiveData<List<UserEntity>>
+    fun getListUser(): LiveData<List<UserEntity>>
 
-    @Query("SELECT * FROM user_table WHERE user_id = :userId")
-    fun load(userId: Int): LiveData<UserEntity>
+    @Query("SELECT * FROM user_table WHERE user_id = :userId")//LIMIT 1
+    fun getListUserById(userId: Int): LiveData<UserEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUser(vararg users: UserEntity)
+    fun insertUser(userEntity: UserEntity)
+    //fun insertUser(vararg users: UserEntity)
 
+    //Delete
     //fun insertUser(vararg users: ProfileEntity)
 }

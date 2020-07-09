@@ -28,8 +28,8 @@ fun userWithRecyclerView(recyclerView: RecyclerView, usersList: List<UserModel>?
  * Method for load image in list users
  */
 @BindingAdapter("loadAvatar")
-fun loadImage(image: ImageView, url: String) {
-    url.let {
+fun loadImage(image: ImageView, url: String?) {
+    url?.let {
         Glide.with(image.context)
             .load(url)
             .apply(
@@ -42,8 +42,8 @@ fun loadImage(image: ImageView, url: String) {
 }
 
 @BindingAdapter("loadAvatarProfile")
-fun loadImageProfile(image: ImageView, url: String) {
-    url.let {
+fun loadImageProfile(image: ImageView, url: String?) {
+    url?.let {
         Glide.with(image.context)
             .load(url)
             .apply(

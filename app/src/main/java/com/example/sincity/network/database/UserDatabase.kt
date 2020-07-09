@@ -1,12 +1,15 @@
 package com.example.sincity.network.database
 
 import android.content.Context
+import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.sincity.network.Dao.UserDao
+import com.example.sincity.network.Entity.ProfileEntity
+import com.example.sincity.network.Entity.UserEntity
 import com.example.sincity.utility.NAME_DATABASE
 
-//@Database(entities = [UserEntity::class, ProfileEntity::class], version = 1, exportSchema = false)
+@Database(entities = [UserEntity::class, ProfileEntity::class], version = 1, exportSchema = false)
 abstract class UserDatabase() : RoomDatabase() {
 
     abstract fun userDao(): UserDao
@@ -15,18 +18,20 @@ abstract class UserDatabase() : RoomDatabase() {
 
         @Volatile
         private var INSTANCE: UserDatabase? = null
-
         fun getInstance(context: Context): UserDatabase {
-            synchronized(UserDatabase::class.java) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(
-                        context.applicationContext,
-                        UserDatabase::class.java,
-                        NAME_DATABASE
-                    ).build()
-                }
+            val tempIntan = INSTANCE
+            if (tempIntan != null) {
+                return tempIntan
             }
-            return INSTANCE!!
+            synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    UserDatabase::class.java,
+                    "user_db"
+                ).build()
+                INSTANCE = instance
+                return instance
+            }
         }
     }
 
