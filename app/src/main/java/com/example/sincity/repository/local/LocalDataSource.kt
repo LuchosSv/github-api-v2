@@ -17,7 +17,7 @@ class LocalDataSource(private val dao: UserDao) {
     }
 
     //delete
-    suspend fun deleteLocalUser(profileEntity: ProfileEntity) = withContext(Dispatchers.IO) {
+    suspend fun deleteLocalProfile(profileEntity: ProfileEntity) = withContext(Dispatchers.IO) {
         dao.deleteUser(profileEntity)
     }
 

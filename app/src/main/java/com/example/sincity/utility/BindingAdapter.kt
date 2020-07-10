@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.sincity.R
+import com.example.sincity.adapter.FavoriteAdapter
 import com.example.sincity.adapter.UserAdapter
 import com.example.sincity.model.UserModel
+import com.example.sincity.network.Entity.ProfileEntity
 import kotlinx.android.synthetic.main.fragment_user.view.*
 
 /**
@@ -21,6 +23,13 @@ import kotlinx.android.synthetic.main.fragment_user.view.*
 fun userWithRecyclerView(recyclerView: RecyclerView, usersList: List<UserModel>?) {
     usersList?.let {
         (recyclerView.adapter as UserAdapter).submitList(usersList)
+    }
+}
+
+@BindingAdapter("app:loadFavoriteList")
+fun favoriteWithRecyclerView(recyclerView: RecyclerView, profileList: List<ProfileEntity>?) {
+    profileList?.let {
+        (recyclerView.adapter as FavoriteAdapter).submitList(profileList)
     }
 }
 

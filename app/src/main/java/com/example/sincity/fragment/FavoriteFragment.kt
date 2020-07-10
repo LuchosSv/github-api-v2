@@ -11,13 +11,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.sincity.adapter.FavoriteAdapter
+import com.example.sincity.adapter.UserAdapter
 import com.example.sincity.databinding.FragmentFavoriteBinding
+import com.example.sincity.viewmodel.FavoriteViewModel
 import com.example.sincity.viewmodel.UserViewModel
 
 class FavoriteFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoriteBinding
-    //private val viewModel: FavoriteViewModel by viewModels()
+    private val viewModel: FavoriteViewModel by viewModels{
+        FavoriteViewModel.ProfileViewModelFactory(requireContext())
+    }
     private val key = "MY_KEY"
 
     override fun onCreateView(
@@ -26,7 +32,9 @@ class FavoriteFragment : Fragment() {
     ): View? {
         binding = FragmentFavoriteBinding.inflate(inflater)
             binding.lifecycleOwner = this@FavoriteFragment
-            //binding.favoriteF = this@FavoriteFragment.viewModel
+            binding.favorite = this@FavoriteFragment.viewModel
+
+        binding.recyclerViewFavorite.adapter = FavoriteAdapter(getUserCallback())
 
         /*viewModel.usersList.observe(viewLifecycleOwner, Observer { userList ->
             userList.let {
@@ -71,13 +79,8 @@ class FavoriteFragment : Fragment() {
         dialog.show()
     }
 
-    class UserViewModelFactory(private val app: Context) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
-                return UserViewModel(app) as T
-            }
-            throw IllegalArgumentException("Invalid Viewmodel")
-        }
+    private fun getUserCallback() = FavoriteAdapter.OnClickListener {
+        viewModel.deleteLocalUser(it)
     }
 
 }

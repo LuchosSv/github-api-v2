@@ -29,9 +29,9 @@ class UserRepository(
         localDataSource.saveLocalProfile(profileEntity)
     }
 
-    /*suspend fun deleteLocalUser(userEntity: UserEntity){
-        localDataSource.deleteLocalUser(userEntity)
-    }*/
+    suspend fun deleteLocalProfile(profileEntity: ProfileEntity){
+        localDataSource.deleteLocalProfile(profileEntity)
+    }
 
     /**
     suspend fun getUsersFromGitHub() {
