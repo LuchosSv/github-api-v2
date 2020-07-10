@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.sincity.model.UserModel
+import com.example.sincity.network.Entity.UserEntity
 import com.example.sincity.network.database.UserDatabase
 import com.example.sincity.repository.UserRepository
 import com.example.sincity.repository.data.RemoteDataSource
@@ -40,7 +41,6 @@ class UserViewModel(private val applicationContext: Context) : ViewModel() {
     //Repository, Dao
     private val dao = UserDatabase.getInstance(applicationContext).userDao()
     private val repository = UserRepository(RemoteDataSource(), LocalDataSource(dao))
-    //private val repository = UserRepository(RemoteDataSource())
 
     init {
         getListUserVM()

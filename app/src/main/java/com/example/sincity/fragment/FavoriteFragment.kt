@@ -1,6 +1,7 @@
 package com.example.sincity.fragment
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
@@ -8,18 +9,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import com.example.sincity.R
-import com.example.sincity.adapter.FavoriteAdapter
-import com.example.sincity.adapter.UserAdapter
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.sincity.databinding.FragmentFavoriteBinding
-import com.example.sincity.viewmodel.FavoriteViewModel
+import com.example.sincity.viewmodel.UserViewModel
 
 class FavoriteFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoriteBinding
-    private val viewModel: FavoriteViewModel by viewModels()
+    //private val viewModel: FavoriteViewModel by viewModels()
     private val key = "MY_KEY"
 
     override fun onCreateView(
@@ -28,14 +26,14 @@ class FavoriteFragment : Fragment() {
     ): View? {
         binding = FragmentFavoriteBinding.inflate(inflater)
             binding.lifecycleOwner = this@FavoriteFragment
-            binding.favoriteF = this@FavoriteFragment.viewModel
+            //binding.favoriteF = this@FavoriteFragment.viewModel
 
-        viewModel.usersList.observe(viewLifecycleOwner, Observer { userList ->
+        /*viewModel.usersList.observe(viewLifecycleOwner, Observer { userList ->
             userList.let {
                 (binding.recyclerViewFavorite.adapter as FavoriteAdapter).submitList(userList)
             }
         })
-        binding.recyclerViewFavorite.adapter = FavoriteAdapter()
+        binding.recyclerViewFavorite.adapter = FavoriteAdapter()*/
 
         //Obtenemos el preferenceManager
         val pref = PreferenceManager.getDefaultSharedPreferences(this.context)
@@ -73,5 +71,13 @@ class FavoriteFragment : Fragment() {
         dialog.show()
     }
 
+    class UserViewModelFactory(private val app: Context) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
+                return UserViewModel(app) as T
+            }
+            throw IllegalArgumentException("Invalid Viewmodel")
+        }
+    }
 
 }

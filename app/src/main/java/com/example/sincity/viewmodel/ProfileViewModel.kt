@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.sincity.model.ProfileModel
+import com.example.sincity.network.Entity.ProfileEntity
+import com.example.sincity.network.Entity.UserEntity
 import com.example.sincity.network.database.UserDatabase
 import com.example.sincity.repository.UserRepository
 import com.example.sincity.repository.data.RemoteDataSource
@@ -35,6 +37,9 @@ class ProfileViewModel(private val applicationContext: Context) : ViewModel() {
     private val dao = UserDatabase.getInstance(applicationContext).userDao()
     private val repository = UserRepository(RemoteDataSource(), LocalDataSource((dao)))
 
+    //local list profile
+    val localProfileList: LiveData<List<ProfileEntity>> = repository.getLocalProfile()
+
     fun getProfileData(name: String){
         viewModelScope.launch {
             _status.value = LOADING
@@ -46,6 +51,15 @@ class ProfileViewModel(private val applicationContext: Context) : ViewModel() {
                 _status.value = ERROR
                 _usersErrorMessage.value = e.message
             }
+        }
+    }
+
+    /**
+     * Metodo para insertar al repository 2
+     */
+    fun saveLocalProfile(profileEntity: ProfileEntity){
+        viewModelScope.launch {
+            repository.saveLocalProfile(profileEntity)
         }
     }
 

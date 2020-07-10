@@ -8,10 +8,6 @@
         <variable
             name="profile"
             type="com.example.sincity.viewmodel.ProfileViewModel" />
-
-        <variable
-            name="profileDTO"
-            type="com.example.sincity.model.ProfileModel" />
     </data>
 
     <ScrollView
@@ -454,6 +450,14 @@
                     android:text="@string/text_add_favorite"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:text="@{String.valueOf(profile.localProfileList.size())}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

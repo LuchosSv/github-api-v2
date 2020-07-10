@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="favoriteF"
-            type="com.example.sincity.viewmodel.FavoriteViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -70,8 +68,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_error_message"
-             />
+            app:layout_constraintTop_toBottomOf="@+id/text_error_message" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -39,14 +39,7 @@ class UserFragment : Fragment() {
          */
         binding.user = userViewModel
 
-        /*userViewModel.userList.observe(viewLifecycleOwner, Observer {userList ->
-            userList.let {
-                //app:loadUsersList="@{user.userList}"
-                (binding.recyclerView.adapter as UserAdapter).submitList(userList)
-            }
-        })*/
-
-        Log.i("Fragment", "Started call from fragment")
+        //Llamamos al adapter
         binding.recyclerView.adapter = UserAdapter(getUserCallback())
 
         return binding.root
